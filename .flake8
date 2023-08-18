@@ -1,0 +1,15 @@
+[flake8]
+ignore = D203,E741
+exclude =
+    migrations
+    __pycache__
+    manage.py
+    base.py
+    local.py
+    env
+    .venv
+    ./venv
+    venv/
+    .venv/
+max-complexity = 10
+max-line-length = 99

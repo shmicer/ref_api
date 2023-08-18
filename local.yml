@@ -1,0 +1,28 @@
+version: "3.11"
+
+services:
+  web:
+    build:
+      context: drf_refferal_api
+      dockerfile: compose/local/django/Dockerfile
+    volumes:
+      - .:/code
+    env_file:
+      - .envs/.local/.django
+      - .envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres:13.0-alpine
+    ports:
+      - "30333:5432"
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .envs/.local/.postgres
+
+volumes:
+  postgres_data:
