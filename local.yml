@@ -3,7 +3,7 @@ version: "3.11"
 services:
   web:
     build:
-      context: drf_refferal_api
+      context: .
       dockerfile: compose/local/django/Dockerfile
     volumes:
       - .:/code

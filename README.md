@@ -1,26 +1,29 @@
 # DRF Phone-Email Auth
 
-A Django app that provides a RESTful API interface for user registration and authentication using phone number or email.
+A Django app that provides a RESTful API interface simple referral program with registration 
+and authentication using phone number.
+It also generates referral code for each user, and it can be entered in special field by another users.
 
 ## Basic Features
 
-- Allows users to register using email or phone number.
-- Email and Phone number verification.
-- Twilio integrated.
+- Allows users to register using phone number.
+- Phone number verification by sms-code.
 - Can set expiration time and length on generated tokens for phone verification.
-- Google authentication.
-- Password change and reset endpoints.
+- Generate referral code for each user.
+- Referral code can be entered by any user.
+- User can enter referral code just once.
+- Detail view of any user profile with list of users which entered referral code.
 
 ## Quick Start
 
-Clone this repository to your local machine and rename the `.env.example` file found in the root directory of the project to `.env` and update the environment variables accordingly. Then you can start the project using Docker or manually using virtual environment.
+Clone this repository to your local machine and rename the `.env.example` file found in the root directory of the project to folder `.envs/local/.django`, `.envs/local/.postgres` and update the environment variables accordingly. Then you can start the project using Docker or manually using virtual environment.
 
 Using Docker:
 
 ```
-$ docker-compose up
-$ docker-compose exec web python manage.py migrate
-$ docker-compose exec web python manage.py createsuperuser
+$ docker compose -f local.yml up
+$ docker-compose -f local.yml exec web python manage.py migrate 
+$ docker-compose -f local.yml exec web python manage.py createsuperuser
 ```
 
 or, manually:
@@ -29,7 +32,7 @@ or, manually:
 2. Open up your terminal and run the following command to install the packages used in this project.
 
 ```
-$ pip install -r requirements.txt
+$ pip install -r local/requirements.txt
 ```
 
 3. Set up a Postgres database for the project.
