@@ -1,4 +1,4 @@
-# DRF Phone-Email Auth
+# DRF Simple Referral API
 
 A Django app that provides a RESTful API interface simple referral program with registration 
 and authentication using phone number.

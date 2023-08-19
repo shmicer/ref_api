@@ -1,0 +1,61 @@
+version: "3.11"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: compose/prod/django/Dockerfile
+    volumes:
+      - .:/code
+    env_file:
+      - .envs/.prod/.django
+      - .envs/.prod/.postgres
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: sh -c "python manage.py collectstatic --no-input &&
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      gunicorn --workers=4 --reload --max-requests=1000 config.wsgi:application -b 0.0.0.0:8000"
+
+  db:
+    image: postgres:13.0-alpine
+    ports:
+      - "30333:5432"
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .envs/.prod/.postgres
+
+  nginx:
+      container_name: nginx
+      working_dir: /code
+      image: nginx:stable-alpine
+      restart: always
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./nginx/prod/:/etc/nginx/conf.d:ro
+        - ./certbot/conf/:/etc/letsencrypt:ro
+        - ./certbot/www:/var/www/certbot:ro
+      links:
+        - web
+      depends_on:
+        - web
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt:rw
+      - ./certbot/www:/var/www/certbot:rw
+    command: certonly --webroot --webroot-path=/var/www/certbot/ --email shmicer@gmail.com --agree-tos --no-eff-email -d 91.222.237.110 -d www.91.222.237.110
+    depends_on:
+      - nginx
+
+
+volumes:
+  postgres_data: {}
