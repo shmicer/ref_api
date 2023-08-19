@@ -43,6 +43,7 @@ services:
         - web
       depends_on:
         - web
+      command: ["nginx", "-g", "daemon off;", "-s", "reload"]
 
 
 volumes:
