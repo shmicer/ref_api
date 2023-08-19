@@ -13,7 +13,8 @@ RUN apk update \
 # install dependencies
 RUN pip install --upgrade pip
 COPY requirements /requirements
-RUN pip install -r /requirements/prod.txt
+RUN pip install -r /requirements/prod.txt  \
+    && rm -rf requirements
 
 # set work directory
 WORKDIR /code

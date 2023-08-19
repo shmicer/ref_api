@@ -2,11 +2,13 @@ version: "3.11"
 
 services:
   web:
+    container_name: django
     build:
       context: .
       dockerfile: compose/prod/django/Dockerfile
     volumes:
       - .:/code
+      - staticfiles:/code/static/
     env_file:
       - .envs/.prod/.django
       - .envs/.prod/.postgres
@@ -30,21 +32,21 @@ services:
       - .envs/.prod/.postgres
 
   nginx:
-      container_name: nginx
-      working_dir: /code
-      image: nginx:stable-alpine
-      restart: always
-      ports:
-        - "80:80"
-        - "443:443"
-      volumes:
-        - ./nginx/prod/:/etc/nginx/conf.d:ro
-      links:
-        - web
-      depends_on:
-        - web
-      command: ["nginx", "-g", "daemon off;", "-s", "reload"]
+    container_name: nginx
+    working_dir: /code
+    image: nginx:stable-alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/prod/:/etc/nginx/conf.d:ro
+      - staticfiles:/code/static/
+    links:
+      - web
+    depends_on:
+      - web
 
 
 volumes:
   postgres_data: {}
+  staticfiles:
