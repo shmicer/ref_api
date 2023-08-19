@@ -114,11 +114,11 @@ class UserAPIView(APIView):
     def put(self, request, phone_number):
         user_object = CustomUser.objects.get(phone_number=phone_number)
         data = self.request.data
+        referral_user = CustomUser.objects.get(invitation_code=data['invited_by_code'])
+        serializer = UserViewSerializer(user_object, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         if not user_object.invited_by_code:
-            referral_user = CustomUser.objects.get(invitation_code=data['invited_by_code'])
-            serializer = UserViewSerializer(user_object, data=data, partial=True)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
             user_object.invited_by = referral_user
             user_object.save()
             return Response(serializer.data)
