@@ -171,4 +171,6 @@ TOKEN_LENGTH = 4
 # Token expiry
 TOKEN_EXPIRE_MINUTES = 3
 
+STATIC_ROOT = os.path.join(BASE_DIR, '/var/www/static')
+
 
