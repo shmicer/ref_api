@@ -46,15 +46,16 @@ services:
       depends_on:
         - web
 
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt:rw
-      - ./certbot/www:/var/www/certbot:rw
-    command: certonly --webroot --webroot-path=/var/www/certbot/ --email shmicer@gmail.com --agree-tos --no-eff-email -d 91.222.237.110 -d www.91.222.237.110
-    depends_on:
-      - nginx
+
+#  certbot:
+#    image: certbot/certbot
+#    container_name: certbot
+#    volumes:
+#      - ./certbot/conf:/etc/letsencrypt:rw
+#      - ./certbot/www:/var/www/certbot:rw
+#    command: certonly --webroot --webroot-path=/var/www/certbot/ --email shmicer@gmail.com --agree-tos --no-eff-email -d 91.222.237.110 -d www.91.222.237.110
+#    depends_on:
+#      - nginx
 
 
 volumes:
